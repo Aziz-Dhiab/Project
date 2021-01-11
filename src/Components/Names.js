@@ -231,7 +231,7 @@ function Names() {
           color="secondary"
           aria-label="outlined secondary button group"
         >
-          <Button style={buttonStyle} onClick={() => setfilter(true)} {...setfilter("absent")}>TOUS</Button>
+          <Button style={buttonStyle} onClick={() => setfilter(true)} >TOUS</Button>
           <Button style={buttonStyle} onClick={() => setfilter("Absent")}>ABSCENT</Button>
           <Button style={buttonStyle} onClick={() => setfilter("Present")}>PRESENT</Button>
         </ButtonGroup>
