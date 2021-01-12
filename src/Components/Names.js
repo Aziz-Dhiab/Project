@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import { useState } from "react";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { makeStyles } from "@material-ui/core/styles";
+import Data from "./Data.js"
 
 let but1 = {
   borderRadius: "5px",
@@ -65,185 +66,158 @@ let frame = {
   borderColor: "white",
 };
 let buttonStyle = {
-    color: "rgb(205, 2, 65)",
-    hover: {color: "rgb(245, 2, 65)"},
-  };
+  color: "rgb(205, 2, 65)",
+  hover: { color: "rgb(245, 2, 65)" },
+};
 let show = {
-   display : "auto"
-}
-  
-  
-  const useStyles = makeStyles((theme) => ({
-      root: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        "& > *": {
-          margin: theme.spacing(1),
-        },
-      },
-    }));
+  display: "auto",
+};
 
-const Data = [
-    {
-        name: "",
-        state:"",
-      },
-  {
-    name: "Simone Simons",
-    state:"",
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    "& > *": {
+      margin: theme.spacing(1),
+    },
   },
-  {
-    name: "John Patrucci",
-    state:"",
-  },
-  {
-    name: "Chuck Shuldinger",
-    state:"",
-  },
-  {
-    name: "Synyster Gates",
-    state:"",
-  },
-  {
-    name: "Sharon del Adel",
-    state:"",
-  },
-  {
-    name: "Mario Duplantier",
-    state:"",
-  },
-  {
-    name: "Maynard James Keenan",
-    state:"",
-  },
-  {
-    name: "Alissa White-Gluz",
-    state:"",
-  },
-  {
-    name: "Tobias Sammet",
-    state:"",
-  },
-  {
-    name: "Ozzy Osbourne",
-    state:"",
-  },
-  {
-    name: "Ronnie James Dio",
-    state:"",
-  },
-  {
-    name: "Amy Lee",
-    state:"",
-  },
-  {
-    name: "Dave Grohl",
-    state:"",
-  },
-  {
-    name: "Dave Mustaine",
-    state:"",
-  },
-  {
-    name: "James Hatfield",
-    state:"",
-  },
-  {
-    name: "Tatiana Shmayluk",
-    state:"",
-  },
-  {
-    name: "Mikael Akerfeldt",
-    state:"",
-  },
-  {
-    name: "Freddy Mercury",
-    state:"",
-  },
-  {
-    name: "Corey Taylor",
-    state:"",
-  },
-  {
-    name: "",
-    state:"",
-  },
-];
+}));
+
+
 
 function Names() {
   const [begin, setbegin] = useState(false);
   const [end, setend] = useState(false);
-  const [person,setperson] = useState([])
-  const [thisperson,setthisperson] = useState(0)
-  const [filter,setfilter] = useState(true)
+  const [thisperson, setthisperson] = useState(0);
+  const [present, setpresent] = useState([]);
+  const [abscent, setabscent] = useState([]);
+  const [tous, settous] = useState([]);
+  const [filternames, setfilternames] = useState("tous");
   const classes = useStyles();
-  const max=Data.length-3
-  function Click(value){
-      setperson([
-          {
-              name : Data[thisperson].name,
-              state : value
-          },
-          ...person
-      ])
-      return setthisperson(thisperson +1)
+  const max = Data.length - 2;
+
+  function Stop() {
+    if (thisperson >= max) setend(true);
   }
-  function Stop(){
-      if (thisperson>max)
-      setend(true)
-  }
-  function filterer(per){
-      return ((filter === true) || (filter === per.state ))
+  function clicker(val) {
+    if (val === "present") {
+      Data[thisperson].state = "present";
+      setpresent([...present, Data[thisperson]]);
+    } else if (val === "absent") {
+      Data[thisperson].state = "absent";
+      setabscent([...abscent, Data[thisperson]]);
+    } else {
+      Data[thisperson].state = "excusé";
+    }
+    settous([...tous, Data[thisperson]]);
+    return setthisperson(thisperson + 1);
   }
   return (
     <div>
-      <div style ={end ? {display : "none"} : {}}>
-      <div ><div style={top}>
-        <div style={frame}>
-          
-            <div style ={begin ? {display : "none"} : {}}><Button
-              style={linkStyle}
-              onClick={() => {
-                setbegin(true);
-                show.display="none"
-                if (thisperson===0){Click("")}
-              }}
-            >
-              Commencer
-            </Button></div>
-          <div ><h1 style={{textAlign:"center",marginTop:"3vh",color:"white"}}>{ Data[thisperson].name }</h1></div>
+      <div style={end ? { display: "none" } : {}}>
+        <div>
+          <div style={top}>
+            <div style={frame}>
+              <div style={begin ? { display: "none" } : {}}>
+                <Button
+                  style={linkStyle}
+                  onClick={() => {
+                    setbegin(true);
+                    show.display = "none";
+                    setthisperson(thisperson+1);
+                  }}
+                >
+                  Commencer
+                </Button>
+              </div>
+              <div>
+                <h1
+                  style={{
+                    textAlign: "center",
+                    marginTop: "3vh",
+                    color: "white",
+                  }}
+                >
+                  {Data[thisperson].name}
+                </h1>
+              </div>
+            </div>
+          </div>
         </div>
-      </div></div>
-      <div style={{ textAlign: "center", height: "220px" }} onClick={() => Stop()}>
-        <Button disabled={!begin || end} variant="secondary" style={but1} onClick={() => Data[thisperson] ? Click("Present"):null} >
-          Present
-        </Button>
-        <Button disabled={!begin || end} variant="secondary" style={but2} onClick={() => Data[thisperson] ? Click("Excusé"):null}>
-          Excusé
-        </Button>
-        <Button disabled={!begin || end} variant="secondary" style={but3} onClick={() => Data[thisperson] ? Click("Excusé"):null}>
-          Absent
-        </Button>
-      </div></div>
-      <div className={classes.root} style={{backroundColor: "black"}}>
-        <ButtonGroup 
+        <div
+          style={{ textAlign: "center", height: "220px" }}
+          onClick={() => Stop()}
+        >
+          <Button
+            disabled={!begin || end}
+            variant="secondary"
+            style={but1}
+            onClick={() => clicker("present")}
+          >
+            Present
+          </Button>
+          <Button
+            disabled={!begin || end}
+            variant="secondary"
+            style={but2}
+            onClick={() => clicker("excusé")}
+          >
+            Excusé
+          </Button>
+          <Button
+            disabled={!begin || end}
+            variant="secondary"
+            style={but3}
+            onClick={() => clicker("absent")}
+          >
+            Absent
+          </Button>
+        </div>
+      </div>
+      <div className={classes.root} style={{ backroundColor: "black" }}>
+        <ButtonGroup
           color="secondary"
           aria-label="outlined secondary button group"
         >
-          <Button style={buttonStyle} onClick={() => setfilter(true)} >TOUS</Button>
-          <Button style={buttonStyle} onClick={() => setfilter("Absent")}>ABSCENT</Button>
-          <Button style={buttonStyle} onClick={() => setfilter("Present")}>PRESENT</Button>
+          <Button style={buttonStyle} onClick={() => setfilternames("tous")}>
+            TOUS
+          </Button>
+          <Button style={buttonStyle} onClick={() => setfilternames("absent")}>
+            ABSCENT
+          </Button>
+          <Button style={buttonStyle} onClick={() => setfilternames("present")}>
+            PRESENT
+          </Button>
         </ButtonGroup>
       </div>
+      <div></div>
       <div>
-        
+        {filternames === "tous"
+          ? tous.map((n) => (
+              <div className="box">
+                <div className="text">{n.name}</div>
+                <button className="butt">{n.state} </button>
+              </div>
+            ))
+          : null}
+        {filternames === "present"
+          ? present.map((n) => (
+              <div className="box">
+                <div className="text">{n.name}</div>
+                <button className="butt">{n.state} </button>
+              </div>
+            ))
+          : null}
+        {filternames === "absent"
+          ? abscent.map((n) => (
+              <div className="box">
+                <div className="text">{n.name}</div>
+                <button className="butt">{n.state} </button>
+              </div>
+            ))
+          : null}
       </div>
-      <div>
-      {person.filter((per)=>filterer(per)).map( (p) => <h3{...p}   /> )}
-      </div>
-
-
     </div>
   );
 }
